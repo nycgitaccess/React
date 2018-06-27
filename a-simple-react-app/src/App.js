@@ -18,7 +18,7 @@ class App extends Component {
   }
 
 
-  getWeather = async (e)=>{
+  getWeather = (e)=>{
     e.preventDefault();
      const city = e.target.elements.city.value;
      const country = e.target.elements.country.vlaue;

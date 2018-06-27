@@ -10,28 +10,51 @@ import Weather from './components/weather';
 // const WeatherApi = '5308ac176eceea519b8c00d76a48438f';
 // const WeatherUrl = 'http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=1111111111';
 class App extends Component {
+  state ={
+    temperatur: undefined,
+    city: undefined,
+    humidity : undefined,
+    error: undefined
+  }
 
-  getWeatherFrom_Api =(e)=>{
 
-    const WeatherApi = '5308ac176eceea519b8c00d76a48438f';
-    const WeatherUrl = `http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID=${WeatherApi}`;
+  getWeather = async (e)=>{
+    e.preventDefault();
+     const city = e.target.elements.city.value;
+     const country = e.target.elements.country.vlaue;
+     const WeatherApi = '5308ac176eceea519b8c00d76a48438f';
+     const WeatherUrl = `http://api.openweathermap.org/data/2.5/weather?q=${city},${country}&APPID=${WeatherApi}`;
+
      fetch(WeatherUrl)
     .then((response)=>{
-      console.log(response);
       return response.json();
     })
     .then((data)=>{
       console.log(data);
-    });
-
+      this.setState({
+        temperatur: data.main.temp,
+        city: data.name,
+        humidity : data.main.humidity,
+        description: data.weather[0].description,
+        error : ""
+      });
+    })
   }
 
   render() {
     return (
       <div className="App">
         <Titles />
-        <Form getweather={this.getWeatherFrom_Api} />
-        <Weather />
+        <Form weather={this.getWeather} />
+
+        <Weather
+          temperatur={this.state.temperatur}
+          city={this.state.city}
+          humidity={this.state.humidity}
+          description={this.state.description}
+          error={this.state.error}
+           />
+
       </div>
     );
   }
